@@ -4,17 +4,22 @@
     //var platforms, player, cursors, stars, star;
     //var score = 0;
     //var scoreText;
-    var player,
+    var game,
+        player,
+        goal,
         platforms,
         ground;
 
-    new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
+    game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+
+    game.state.add('level', {
         preload: function (game) {
             game.load.image('ground', 'assets/images/platform.png');
             game.load.spritesheet('dude', 'assets/images/dude.png', 32, 48);
         },
         create: function (game) {
             game.world.setBounds(0, 0, 1600, 600);
+            game.stage.backgroundColor = '#ffffff';
             game.physics.startSystem(Phaser.Physics.ARCADE);
             platforms = game.add.group();
             platforms.enableBody = true;
@@ -48,7 +53,8 @@
 
             //stars = game.add.group();
 
-            //stars.enableBody = true;
+            goal = game.add.sprite(600, 488, 'dude', 9)
+            game.physics.arcade.enable(goal);
 
             //  Here we'll create 12 of them evenly spaced apart
             // for (var i = 0; i < 12; i++) {
@@ -71,6 +77,11 @@
             player.body.velocity.x = 150;
             player.animations.play('right');
             game.physics.arcade.collide(player, platforms);
+            //game.physics.arcade.collide(player, goal);
+            game.physics.arcade.overlap(player, goal, function (player, goal) {
+                game.state.start('level', true, false);
+            }, null, this);
+
             // function collectStar (player, star) {
             //     // Removes the star from the screen
             //     star.kill();
@@ -80,8 +91,6 @@
             // }
             //
             // //  Collide the player and the stars with the platforms
-            // game.physics.arcade.collide(stars, platforms);
-            // game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
 
 
@@ -109,4 +118,6 @@
             // }
         }
     });
+
+    game.state.start('level');
 }());
