@@ -3,6 +3,8 @@ var gulp           = require('gulp'),
     connect        = require('gulp-connect'),
     jshint         = require('gulp-jshint'),
     concat         = require('gulp-concat'),
+    plumber        = require('gulp-plumber'),
+    rjs            = require('gulp-requirejs'),
     LIB_FILES      = ['bower_components/phaser/build/phaser.min.js'],
     SCRIPT_FILES   = ['src/js/**/*.js'],
     STYLE_FILES    = ['src/css/**/*.css'],
@@ -15,7 +17,13 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('libs', function() {
+gulp.task('requirejs', function() {
+    gulp.src('bower_components/requirejs/require.js')
+        .pipe(gulp.dest('public/js'))
+        .pipe(connect.reload());
+});
+
+gulp.task('libs', ['requirejs'], function() {
     gulp.src(LIB_FILES)
         .pipe(concat('libs.js'))
         .pipe(gulp.dest('public/js'))
@@ -23,10 +31,13 @@ gulp.task('libs', function() {
 });
 
 gulp.task('scripts', ['lint'], function() {
-    gulp.src(SCRIPT_FILES)
-        .pipe(concat('main.js'))
-        .pipe(gulp.dest('public/js'))
-        .pipe(connect.reload());
+    rjs({
+        baseUrl: 'src/js',
+        name: 'main',
+        out: 'main.js'
+    })
+    .pipe(gulp.dest('public/js'))
+    .pipe(connect.reload());
 });
 
 gulp.task('styles', function() {

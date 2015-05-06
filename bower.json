@@ -15,5 +15,8 @@
   ],
   "dependencies": {
     "phaser": "~2.3.0"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.17"
   }
 }
