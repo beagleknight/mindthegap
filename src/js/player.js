@@ -4,22 +4,23 @@
     define(function () {
         var Player;
 
-        Player = function (game) {
+        Player = function (data, game) {
+            this.data = data;
             this.game = game;
 
-            this.sprite = this.game.add.sprite(32, 488, 'dude');
+            this.sprite = this.game.add.sprite(this.data.x, this.data.y - 48, 'objects');
             this.game.physics.arcade.enable(this.sprite);
 
             this.sprite.body.bounce.y = 0.2;
             this.sprite.body.gravity.y = 300;
             this.sprite.body.collideWorldBounds = true;
-            this.sprite.body.velocity.x = 150;
 
             this.sprite.animations.add('right', [0, 1, 2, 3], 10, true);
 
+            this.sprite.body.velocity.x = 150;
             this.run();
 
-            this.commands = ['jump', 'crouch'];
+            this.commands = ['jump', 'crouch', 'jump'];
             this.game.camera.follow(this.sprite);
         };
 
@@ -35,10 +36,8 @@
         };
 
         Player.prototype.jump = function () {
-            if (this.sprite.body.touching.down) {
-                this.sprite.body.velocity.y = -225;
-                this.state = Player.JUMPING;
-            }
+            this.state = Player.JUMPING;
+            this.sprite.body.velocity.y = -225;
         };
 
         Player.prototype.crouch = function () {

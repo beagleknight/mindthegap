@@ -1,4 +1,5 @@
 var gulp           = require('gulp'),
+    clean          = require('gulp-clean'),
     jade           = require('gulp-jade'),
     connect        = require('gulp-connect'),
     jshint         = require('gulp-jshint'),
@@ -10,6 +11,11 @@ var gulp           = require('gulp'),
     STYLE_FILES    = ['src/css/**/*.css'],
     TEMPLATE_FILES = ['src/templates/**/*.jade'],
     ASSET_FILES    = ['src/assets/**/*'];
+
+gulp.task('clean', function () {
+    return gulp.src('public', { read: false })
+        .pipe(clean());
+});
 
 gulp.task('lint', function() {
     gulp.src(SCRIPT_FILES)
