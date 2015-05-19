@@ -46,11 +46,7 @@
             update: function (game) {
                 this.player.update(game);
 
-                game.physics.arcade.collide(this.player.sprite, this.layer, function () {
-                    if (this.player.state === Player.JUMPING) {
-                        this.player.run();
-                    }
-                }, null, this);
+                game.physics.arcade.collide(this.player.sprite, this.layer);
 
                 game.physics.arcade.overlap(this.player.sprite, this.spikes, function () {
                     game.state.start('level', true, false, 'tutorial');
