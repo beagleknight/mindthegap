@@ -44,6 +44,11 @@
                 [[554, 485], [554, 485], [586, 485], [610, 485], [640, 485], [640, 485], [672, 485]].forEach(function (coords) {
                     new Spike(coords[0], coords[1], this.spikes, Spike.DOWN);
                 }.bind(this));
+
+                this.pods = game.add.group();
+                this.pods.enableBody = true;
+                this.pods.create(195, 488, 'dude', 12);
+                this.pods.create(475, 488, 'dude', 12);
             },
             update: function (game) {
                 game.physics.arcade.collide(this.player.sprite, this.platforms);
@@ -57,6 +62,10 @@
                 game.physics.arcade.overlap(this.player.sprite, this.spikes, function () {
                     game.state.start('level', true, false);
                 }, null, this);
+
+                game.physics.arcade.overlap(this.player.sprite, this.pods, function () {
+                    this.player.performCommand();
+                }.bind(this));
             }
         };
 
