@@ -8,7 +8,7 @@ var gulp           = require('gulp'),
     rjs            = require('gulp-requirejs'),
     LIB_FILES      = ['bower_components/phaser/build/phaser.min.js'],
     SCRIPT_FILES   = ['src/js/**/*.js'],
-    STYLE_FILES    = ['src/css/**/*.css'],
+    STYLE_FILES    = ['src/css/reset.css', 'src/css/**/*.css'],
     TEMPLATE_FILES = ['src/templates/**/*.jade'],
     ASSET_FILES    = ['src/assets/**/*'];
 

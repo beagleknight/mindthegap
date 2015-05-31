@@ -14,6 +14,10 @@
             create: function (game) {
                 var i, l, object;
 
+                game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                game.scale.pageAlignHorizontally = true;
+                game.scale.pageAlignVertically = true;
+
                 game.world.setBounds(0, 0, 1600, 600);
                 game.stage.backgroundColor = '#7EC0EE';
                 game.physics.startSystem(Phaser.Physics.ARCADE);
