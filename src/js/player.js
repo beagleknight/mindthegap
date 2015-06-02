@@ -18,9 +18,7 @@
 
             this.sprite.animations.add('right', [0, 1, 2, 3], 10, true);
 
-            this.run();
-
-            this.commands = ['jump', 'crouch', 'crouch'];
+            this.commands = [];
             this.game.camera.follow(this.sprite);
         };
 

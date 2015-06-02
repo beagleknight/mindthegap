@@ -2,9 +2,14 @@
     "use strict";
 
     define(['player', 'spike'], function (Player, Spike) {
+        var READING_COMMANDS = 0;
+        var RUNNING = 1;
         var levelState = {
             init: function (levelId) {
                 this.levelId = levelId;
+                this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                this.scale.pageAlignHorizontally = true;
+                this.scale.pageAlignVertically = true;
             },
             preload: function (game) {
                 game.load.spritesheet('tileset', '/assets/images/tileset.png', 20, 20);
@@ -13,10 +18,6 @@
             },
             create: function (game) {
                 var i, l, object;
-
-                game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-                game.scale.pageAlignHorizontally = true;
-                game.scale.pageAlignVertically = true;
 
                 game.world.setBounds(0, 0, 1600, 600);
                 game.stage.backgroundColor = '#7EC0EE';
@@ -46,23 +47,45 @@
                         this.pods.create(object.x, object.y - 48, 'objects', 12);
                     }
                 }
+
+                this.commands = game.add.group();
+                game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.add(this.addCommand("jump", 5), this);
+                game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.add(this.addCommand("crouch", 6), this);
+
+                this.state = READING_COMMANDS;
             },
             update: function (game) {
-                this.player.update(game);
-
                 game.physics.arcade.collide(this.player.sprite, this.layer);
 
-                game.physics.arcade.overlap(this.player.sprite, this.spikes, function () {
-                    game.state.start('level', true, false, 'tutorial');
-                }, null, this);
+                if (this.state === READING_COMMANDS) {
+                    if (this.player.commands.length === this.pods.length) {
+                        this.state = RUNNING;
+                        this.player.run();
+                    }
+                } else if (this.state === RUNNING) {
+                    this.player.update(game);
 
-                game.physics.arcade.overlap(this.player.sprite, this.pods, function () {
-                    this.player.performCommand();
-                }, null, this);
+                    game.physics.arcade.overlap(this.player.sprite, this.spikes, function () {
+                        game.state.start('level', true, false, 'tutorial');
+                    }, null, this);
 
-                game.physics.arcade.overlap(this.player.sprite, this.goal, function () {
-                    game.state.start('level', true, false, 'tutorial');
-                }, null, this);
+                    game.physics.arcade.overlap(this.player.sprite, this.pods, function () {
+                        this.player.performCommand();
+                    }, null, this);
+
+                    game.physics.arcade.overlap(this.player.sprite, this.goal, function () {
+                        game.state.start('level', true, false, 'tutorial');
+                    }, null, this);
+                }
+            },
+            addCommand: function (command, commandSpriteFrame) {
+                return function () {
+                    if (this.state === READING_COMMANDS) {
+                        var commandImage = this.commands.create(this.commands.length * 40, 550, 'objects', commandSpriteFrame);
+                        commandImage.fixedToCamera = true;
+                        this.player.commands.push(command);
+                    }
+                };
             }
         };
 
