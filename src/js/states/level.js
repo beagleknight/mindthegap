@@ -4,6 +4,7 @@
     define(['player', 'spike'], function (Player, Spike) {
         var READING_COMMANDS = 0;
         var RUNNING = 1;
+        var LEVEL_LOOKUP = 2;
         var levelState = {
             init: function (levelId) {
                 this.levelId = levelId;
@@ -52,7 +53,15 @@
                 this.game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.add(this.addCommand("jump", 5), this);
                 this.game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.add(this.addCommand("crouch", 6), this);
 
-                this.state = READING_COMMANDS;
+                var cameraLookup = this.game.add.tween(this.camera);
+                cameraLookup.to({x: 1600}, 3000, Phaser.Easing.Default, true, 1000, 0, true);
+                cameraLookup.onComplete.add(function () {
+                    this.camera.follow(this.player.sprite);
+                    this.state = READING_COMMANDS;
+                }, this);
+                cameraLookup.start();
+
+                this.state = LEVEL_LOOKUP;
             },
             update: function () {
                 this.game.physics.arcade.collide(this.player.sprite, this.layer);
