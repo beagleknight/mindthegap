@@ -22,9 +22,6 @@
             this.game.camera.follow(this.sprite);
         };
 
-        Player.prototype.update = function (game) {
-        };
-
         Player.prototype.jump = function () {
             this.state = Player.JUMPING;
             this.sprite.body.velocity.y = -225;
