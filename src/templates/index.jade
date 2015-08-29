@@ -5,4 +5,13 @@ html
     link(rel="stylesheet" href="/css/main.css")
   body
     script(src="/js/libs.js")
-    script(data-main="/js/main.js", src="/js/require.js")
+    script.
+      // set our baseURL reference path
+      System.config({
+        defaultJSExtensions: true,
+        baseURL: '/js'
+      });
+
+      // loads /app/main.js
+      System.import('main');
+    </script>

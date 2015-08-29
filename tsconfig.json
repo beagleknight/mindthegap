@@ -1,0 +1,35 @@
+{
+    "version": "1.5.0-beta",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "outDir": "./public/js/"
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./node_modules/**/*"
+    ],
+    "files": [
+        "./bower_components/phaser/typescript/p2.d.ts",
+        "./bower_components/phaser/typescript/phaser.comments.d.ts",
+        "./bower_components/phaser/typescript/phaser.d.ts",
+        "./bower_components/phaser/typescript/pixi.comments.d.ts",
+        "./bower_components/phaser/typescript/pixi.d.ts",
+        "./src/ts/game.ts",
+        "./src/ts/main.ts",
+        "./src/ts/player.ts",
+        "./src/ts/spike.ts",
+        "./src/ts/states/level.ts"
+    ]
+}
